@@ -6,6 +6,8 @@ import android.app.NotificationManager
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.graphics.drawable.ClipDrawable.HORIZONTAL
+import android.graphics.drawable.ClipDrawable.VERTICAL
 import android.media.AudioAttributes
 import android.media.RingtoneManager
 import android.net.Uri
@@ -18,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.carrotmarketapplication.databinding.ActivityMainBinding
 
@@ -39,8 +42,15 @@ class MainActivity : AppCompatActivity() {
 
         // recyclerView
         val adapter = CustomAdapter(dataList)
-        binding.recyclerView.adapter = adapter
-        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+
+        // recycler item 각 항목 사이사이에 구분선 추가
+        val decoration = DividerItemDecoration(applicationContext, HORIZONTAL) // 처음에 자료보고 VERTICAL 로 지정했었는데 에러뜸
+
+        binding.apply {
+            recyclerView.addItemDecoration(decoration) // decoration(구분선) 지정은 어댑터 연결전에 해줘야 한다!
+            recyclerView.adapter = adapter
+            recyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
+        }
 
         adapter.itemClick = object: CustomAdapter.ItemClick {
             override fun onItemClick(view: View, position: Int) {

@@ -20,7 +20,7 @@
 <!--상품 사진과 이비지 버튼이 겹치게 만들 수 있구나! (기준이 parent가 되면 상관없군)-->
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/detail_ib_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"

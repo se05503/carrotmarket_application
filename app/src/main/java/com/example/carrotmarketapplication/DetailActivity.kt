@@ -36,5 +36,8 @@ class DetailActivity : AppCompatActivity() {
             binding.detailTvDescription.text=item.description
             binding.detailTvPrice.text=item.price.toString()
         }
+        binding.detailIbBack.setOnClickListener {
+            finish()
+        }
     }
 }
