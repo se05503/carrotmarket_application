@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/sample8" />
 
-<!--상품 사진과 이비지 버튼이 겹치게 만들 수 있구나! (기준이 parent가 되면 상관없군)-->
+    <!--상품 사진과 이비지 버튼이 겹치게 만들 수 있구나! (기준이 parent가 되면 상관없군)-->
 
     <ImageButton
         android:id="@+id/detail_ib_back"
@@ -108,10 +108,9 @@
 
     <TextView
         android:id="@+id/detail_tv_title"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_margin="16dp"
         android:text="제목"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -120,15 +119,16 @@
 
     <TextView
         android:id="@+id/detail_tv_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:layout_margin="16dp"
         android:text="내용"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/detail_tv_title" />
 
+
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         app:layout_constraintBottom_toBottomOf="parent"
