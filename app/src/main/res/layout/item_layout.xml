@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    android:orientation="horizontal">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:layout_margin="15dp"
+        app:cardCornerRadius="16dp">
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/item_iv_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/sample1" />
+    </androidx.cardview.widget.CardView>
+
+<!--    <androidx.appcompat.widget.AppCompatImageView-->
+<!--        android:id="@+id/item_iv_image"-->
+<!--        android:layout_width="100dp"-->
+<!--        android:layout_height="100dp"-->
+<!--        android:layout_margin="5dp"-->
+<!--        android:background="@drawable/bg_round"-->
+<!--        android:clipToOutline="true"-->
+<!--        android:scaleType="centerInside"-->
+<!--        android:src="@drawable/sample1" />-->
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="2"
+        android:layout_height="match_parent"
+        android:layout_margin="15dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/item_tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:textSize="18sp"
+            android:text="프라다 복조리백" />
+
+        <TextView
+            android:id="@+id/item_tv_address"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="수원시 영통구 원천동"
+            android:textColor="@color/dim_gray"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/item_tv_price"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="50,000원"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+<!--        그래도 시도해보면서 height=0 주고 weight값 주어서 비율 조절하는 방법을 좀 더 잘 알게 되었다-->
+<!--        android:width, height 값이 처음엔 엄청 쉬운 개념인 줄 알았는데, 부모 관계에, 동등 관계를 고려했을때는 쉽지 않았다-->
+<!--        헉.. android:layout_gravity 속성이 아니라 android:gravity 속성이 답이었다..-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:gravity="right|bottom"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/iv_chat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_chat" />
+
+            <TextView
+                android:id="@+id/item_tv_chatNum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="16" />
+
+            <ImageView
+                android:id="@+id/iv_heart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:src="@drawable/ic_heart" />
+
+            <TextView
+                android:id="@+id/item_tv_likeNum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="25" />
+        </LinearLayout>
+    </LinearLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>

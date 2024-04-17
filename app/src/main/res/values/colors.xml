@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="red">#ff0000</color>
+    <color name="yellow">#ffeb3b</color>
+    <color name="purple">#823EE4</color>
+    <color name="skyblue">#3EAFBD</color>
+    <color name="sweetpink">#F19B9B</color>
+    <color name="wisteria">#c785d3</color>
+    <color name="neon_blue">#3333FF</color>
+    <color name="dark_gray">#b1b1b1</color>
+    <color name="dim_gray">#666666</color>
+    <color name="charcoal">#424242</color>
+    <color name="orange_peel">#ff9900</color>
+    <color name="pumpkin">#f96f11</color>
+    <color name="international_orange">#f95011</color>
+    <color name="genoa">#28726C</color>
+</resources>
