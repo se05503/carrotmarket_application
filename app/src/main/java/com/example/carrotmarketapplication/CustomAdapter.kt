@@ -5,8 +5,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.carrotmarketapplication.databinding.ItemLayoutBinding
+import java.text.DecimalFormat
 
 class CustomAdapter(private val dataList: MutableList<Item>):RecyclerView.Adapter<CustomAdapter.Holder>() {
+
+    val decimal = DecimalFormat("#,###")
 
     interface ItemClick {
         fun onItemClick(view: View, position:Int)
@@ -44,7 +47,7 @@ class CustomAdapter(private val dataList: MutableList<Item>):RecyclerView.Adapte
         holder.icon.setImageResource(dataList[position].icon)
         holder.title.text = dataList[position].title
         holder.address.text = dataList[position].address
-        holder.price.text = dataList[position].price.toString()
+        holder.price.text = "${decimal.format(dataList[position].price)}원"
         holder.chatNum.text=dataList[position].chatNum.toString()
         holder.heartNum.text=dataList[position].likeNum.toString()
     }

@@ -79,6 +79,7 @@
 
             <TextView
                 android:id="@+id/item_tv_chatNum"
+                android:layout_marginLeft="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="16" />
@@ -93,6 +94,7 @@
             <TextView
                 android:id="@+id/item_tv_likeNum"
                 android:layout_width="wrap_content"
+                android:layout_marginLeft="5dp"
                 android:layout_height="wrap_content"
                 android:text="25" />
         </LinearLayout>
