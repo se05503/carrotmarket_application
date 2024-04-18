@@ -97,6 +97,33 @@ class MainActivity : AppCompatActivity() {
                 intent.putExtras(bundle)
                 startActivity(intent)
             }
+
+            override fun onItemLongClick(view: View, position: Int) {
+                // 기본 다이얼로그 적용 → 뒤로가기 버튼에서도 동일한 다이얼로그 적용했으니 시간되면 함수로 빼기
+                val builder = AlertDialog.Builder(this@MainActivity)
+                builder.setTitle("상품 삭제")
+                builder.setMessage("상품을 정말로 삭제하시겠습니까?")
+                builder.setIcon(R.drawable.ic_chat2)
+
+                // 버튼 클릭시 발생하는 이벤트를 listener 객체에 정의
+                val listener = object : DialogInterface.OnClickListener {
+                    override fun onClick(dialog: DialogInterface?, which: Int) {
+                        when(which) {
+                            DialogInterface.BUTTON_POSITIVE -> {
+                                // 리스트 삭제
+                            }
+                            DialogInterface.BUTTON_NEGATIVE -> {
+                                // 뒤로가기
+                                null
+                            }
+                        }
+                    }
+                }
+
+                builder.setPositiveButton("확인",listener)
+                builder.setNegativeButton("취소",listener)
+                builder.show()
+            }
         }
 
         // notification

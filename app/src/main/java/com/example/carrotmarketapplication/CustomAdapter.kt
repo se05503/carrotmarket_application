@@ -13,12 +13,17 @@ class CustomAdapter(private val dataList: MutableList<Item>):RecyclerView.Adapte
 
     interface ItemClick {
         fun onItemClick(view: View, position:Int)
+        fun onItemLongClick(view:View, position:Int)
     }
 
     var itemClick: ItemClick? = null
 
     // 뷰 홀더 생성
     inner class Holder(val binding:ItemLayoutBinding):RecyclerView.ViewHolder(binding.root) {
+//        init {
+//            itemView.set
+//        }
+
         val icon = binding.itemIvImage
         val title = binding.itemTvTitle
         val address = binding.itemTvAddress
@@ -44,6 +49,12 @@ class CustomAdapter(private val dataList: MutableList<Item>):RecyclerView.Adapte
         holder.itemView.setOnClickListener {
             itemClick?.onItemClick(it,position)
         }
+        holder.itemView.setOnLongClickListener {
+            itemClick?.onItemLongClick(it,position)
+            // 일단 오류 임시 방편 해결..???????? 이렇게 하는거 맞아??????????
+            true
+        }
+
         holder.icon.setImageResource(dataList[position].icon)
         holder.title.text = dataList[position].title
         holder.address.text = dataList[position].address
