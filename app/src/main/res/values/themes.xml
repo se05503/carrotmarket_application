@@ -1,6 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.CarrotMarketApplication" parent="Theme.Material3.DayNight.NoActionBar">
+<!--기존: parent="Theme.Material3.DayNight.NoActionBar"-->
+<!--        변경후:Theme.AppCompat.Light.NoActionBar-->
         <item name="colorPrimary">@color/international_orange</item>
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
