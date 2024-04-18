@@ -13,7 +13,9 @@ import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.view.animation.AlphaAnimation
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -22,6 +24,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.carrotmarketapplication.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -41,18 +44,51 @@ class MainActivity : AppCompatActivity() {
         dataAddToList() // 데이터 초기화
 
         // recyclerView
-        val adapter = CustomAdapter(dataList)
+        val marketAdapter = CustomAdapter(dataList)
 
         // recycler item 각 항목 사이사이에 구분선 추가
         val decoration = DividerItemDecoration(applicationContext, HORIZONTAL) // 처음에 자료보고 VERTICAL 로 지정했었는데 에러뜸
 
-        binding.apply {
-            recyclerView.addItemDecoration(decoration) // decoration(구분선) 지정은 어댑터 연결전에 해줘야 한다!
-            recyclerView.adapter = adapter
-            recyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
+        binding.recyclerView.apply {
+            addItemDecoration(decoration) // decoration(구분선) 지정은 어댑터 연결전에 해줘야 한다!
+            adapter = marketAdapter
+            layoutManager = LinearLayoutManager(this@MainActivity)
+            setHasFixedSize(true) // 일단 넣어봄
         }
 
-        adapter.itemClick = object: CustomAdapter.ItemClick {
+        // floating button 구현 부분
+        val fadeIn = AlphaAnimation(0f,1f).apply { duration=500 }
+        val fadeOut = AlphaAnimation(1f,0f).apply { duration=500 }
+        var isTop = true
+
+        binding.recyclerView.addOnScrollListener(object :RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if(!binding.recyclerView.canScrollVertically(-1)
+                    &&newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    // 버튼이 점점 사라지게 만든다
+                    // 리스트가 최상단에 있는 경우
+                    binding.mainFloatingBtn.startAnimation(fadeOut)
+                    binding.mainFloatingBtn.visibility = View.GONE
+                    isTop = true
+                    Log.d("floating","Top")
+                } else {
+                    if(isTop) {
+                        binding.mainFloatingBtn.visibility=View.VISIBLE
+                        binding.mainFloatingBtn.startAnimation(fadeIn)
+                        isTop = false
+                        Log.d("floating","Not Top")
+                    }
+                }
+            }
+        })
+
+        binding.mainFloatingBtn.setOnClickListener {
+            binding.recyclerView.smoothScrollToPosition(0)
+        }
+
+
+        marketAdapter.itemClick = object: CustomAdapter.ItemClick {
             override fun onItemClick(view: View, position: Int) {
                 val intent = Intent(this@MainActivity, DetailActivity::class.java)
                 val bundle = Bundle().apply { // bundle 에다가 data class 패킹해서 넣기

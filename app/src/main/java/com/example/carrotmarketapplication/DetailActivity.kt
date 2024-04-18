@@ -40,7 +40,7 @@ class DetailActivity : AppCompatActivity() {
                 detailTvAddress.text=item.address
                 detailTvTitle.text=item.title
                 detailTvDescription.text=item.description
-                detailTvPrice.text="${decimal.format(item.price)}원"
+                detailTvPrice.text = "${decimal.format(item.price)}원"
             }
         }
         binding.detailIbBack.setOnClickListener {
