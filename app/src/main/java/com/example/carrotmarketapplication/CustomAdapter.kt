@@ -51,7 +51,7 @@ class CustomAdapter(private val dataList: MutableList<Item>):RecyclerView.Adapte
         }
         holder.itemView.setOnLongClickListener {
             itemClick?.onItemLongClick(it,position)
-            // 일단 오류 임시 방편 해결..???????? 이렇게 하는거 맞아??????????
+            // 튜터님이 맞다고 하심
             true
         }
 

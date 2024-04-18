@@ -110,7 +110,7 @@ class MainActivity : AppCompatActivity() {
                     override fun onClick(dialog: DialogInterface?, which: Int) {
                         when(which) {
                             DialogInterface.BUTTON_POSITIVE -> {
-                                // 리스트 삭제
+                                deleteItem(position)
                             }
                             DialogInterface.BUTTON_NEGATIVE -> {
                                 // 뒤로가기
@@ -131,6 +131,13 @@ class MainActivity : AppCompatActivity() {
             // 알림 발생
             notification()
         }
+    }
+
+    // 리스트에서 아이템을 삭제하는 함수
+    fun deleteItem(position: Int) {
+        dataList.removeAt(position)
+        // 아이템이 변경되고 UI가 바뀐걸 업데이트 해주는 코드
+        binding.recyclerView.adapter?.notifyDataSetChanged()
     }
 
     private fun notification() {
