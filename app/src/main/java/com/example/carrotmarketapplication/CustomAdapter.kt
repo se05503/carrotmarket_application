@@ -19,17 +19,27 @@ class CustomAdapter(private val dataList: MutableList<Item>):RecyclerView.Adapte
     var itemClick: ItemClick? = null
 
     // 뷰 홀더 생성
-    inner class Holder(val binding:ItemLayoutBinding):RecyclerView.ViewHolder(binding.root) {
-//        init {
-//            itemView.set
-//        }
+    inner class Holder(binding:ItemLayoutBinding):RecyclerView.ViewHolder(binding.root) {
+        var binding: ItemLayoutBinding
+
+        init {
+            this.binding = binding
+            binding.itemIvHeart.setOnClickListener {
+                val pos = adapterPosition
+                dataList[pos].heartStatus = true
+            }
+        }
 
         val icon = binding.itemIvImage
         val title = binding.itemTvTitle
         val address = binding.itemTvAddress
         val price = binding.itemTvPrice
         val chatNum = binding.itemTvChatNum
+
         val heartNum = binding.itemTvLikeNum
+        val heartStatus = binding.itemIvHeart
+
+        // 좋아요 기능 추가
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
@@ -51,7 +61,6 @@ class CustomAdapter(private val dataList: MutableList<Item>):RecyclerView.Adapte
         }
         holder.itemView.setOnLongClickListener {
             itemClick?.onItemLongClick(it,position)
-            // 튜터님이 맞다고 하심
             true
         }
 
@@ -61,5 +70,13 @@ class CustomAdapter(private val dataList: MutableList<Item>):RecyclerView.Adapte
         holder.price.text = "${decimal.format(dataList[position].price)}원"
         holder.chatNum.text=dataList[position].chatNum.toString()
         holder.heartNum.text=dataList[position].likeNum.toString()
+
+        if(dataList[position].heartStatus) {
+            // true인 경우
+            holder.heartStatus.setImageResource(R.drawable.ic_fullheart2)
+        } else {
+            // false인 경우
+            holder.heartStatus.setImageResource(R.drawable.ic_heart2)
+        }
     }
 }

@@ -83,8 +83,9 @@
                 android:text="16" />
 
             <ImageView
-                android:id="@+id/iv_heart"
+                android:id="@+id/item_iv_heart"
                 android:layout_width="24dp"
+                android:clickable="true"
                 android:layout_height="24dp"
                 android:layout_marginLeft="5dp"
                 android:src="@drawable/ic_heart2" />

@@ -1,5 +1,6 @@
 package com.example.carrotmarketapplication
 
+import android.content.Intent
 import android.graphics.Paint
 import android.os.Bundle
 import android.util.Log
@@ -15,6 +16,7 @@ import java.text.DecimalFormat
 class DetailActivity : AppCompatActivity() {
 
     val decimal = DecimalFormat("#,###")
+    var isHeart = false
 
     companion object {
         const val PARCEL_KEY:String = "parcel_key"
@@ -51,15 +53,19 @@ class DetailActivity : AppCompatActivity() {
 
         binding.apply {
             detailIbBack.setOnClickListener{
-                finish()
+                intent = Intent(this@DetailActivity,MainActivity::class.java)
+                intent.putExtra("heartStatus",isHeart)
+                startActivity(intent)
             }
             detailIvBlankheart.setOnClickListener {
                 if(detailIvFullheart.visibility == View.VISIBLE) {
                     detailIvFullheart.visibility = View.INVISIBLE
+                    isHeart = false
                     Log.d("heart","false")
                 }
                 else {
                     detailIvFullheart.visibility = View.VISIBLE
+                    isHeart = true
                     var snackbar = Snackbar.make(main, "관심 목록에 추가되었습니다",Snackbar.LENGTH_LONG) // 첫번째 인자 main 맞나?
                     snackbar.show()
                     Log.d("heart","true")
@@ -68,9 +74,11 @@ class DetailActivity : AppCompatActivity() {
             detailIvFullheart.setOnClickListener {
                 if(detailIvFullheart.visibility == View.VISIBLE) {
                     detailIvFullheart.visibility = View.INVISIBLE
+                    isHeart = false
                 }
                 else {
                     detailIvFullheart.visibility = View.VISIBLE
+                    isHeart = true
                     var snackbar = Snackbar.make(main, "관심 목록에 추가되었습니다",Snackbar.LENGTH_LONG) // 첫번째 인자 main 맞나?
                     snackbar.show()
                 }

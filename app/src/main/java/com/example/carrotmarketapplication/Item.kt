@@ -12,5 +12,6 @@ data class Item(
     val price: Int,
     val address: String,
     val likeNum: Int,
-    val chatNum: Int
+    val chatNum: Int,
+    var heartStatus: Boolean
 ):Parcelable
