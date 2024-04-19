@@ -20,15 +20,6 @@ class CustomAdapter(private val dataList: MutableList<Item>):RecyclerView.Adapte
 
     // 뷰 홀더 생성
     inner class Holder(binding:ItemLayoutBinding):RecyclerView.ViewHolder(binding.root) {
-        var binding: ItemLayoutBinding
-
-        init {
-            this.binding = binding
-            binding.itemIvHeart.setOnClickListener {
-                val pos = adapterPosition
-                dataList[pos].heartStatus = true
-            }
-        }
 
         val icon = binding.itemIvImage
         val title = binding.itemTvTitle

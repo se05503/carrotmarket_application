@@ -16,7 +16,7 @@ import java.text.DecimalFormat
 class DetailActivity : AppCompatActivity() {
 
     val decimal = DecimalFormat("#,###")
-    var isHeart = false
+//    var isHeart = false
 
     companion object {
         const val PARCEL_KEY:String = "parcel_key"
@@ -53,19 +53,27 @@ class DetailActivity : AppCompatActivity() {
 
         binding.apply {
             detailIbBack.setOnClickListener{
-                intent = Intent(this@DetailActivity,MainActivity::class.java)
-                intent.putExtra("heartStatus",isHeart)
-                startActivity(intent)
+//                intent = Intent(this@DetailActivity,MainActivity::class.java)
+//                val bundle = Bundle()
+//                bundle.putInt("position",item?.position ?:-1)
+//                bundle.putBoolean("heartStatus",isHeart)
+//                intent.putExtra("bundle",bundle)
+//                startActivity(intent)
+                finish()
             }
             detailIvBlankheart.setOnClickListener {
                 if(detailIvFullheart.visibility == View.VISIBLE) {
                     detailIvFullheart.visibility = View.INVISIBLE
-                    isHeart = false
+                    MainActivity.dataList[item?.position ?:-1].heartStatus = false
+//                    isHeart = false
+//                    item?.heartStatus = false
                     Log.d("heart","false")
                 }
                 else {
                     detailIvFullheart.visibility = View.VISIBLE
-                    isHeart = true
+//                    item?.heartStatus = true
+//                    isHeart = true
+                    MainActivity.dataList[item?.position ?:-1].heartStatus = true
                     var snackbar = Snackbar.make(main, "관심 목록에 추가되었습니다",Snackbar.LENGTH_LONG) // 첫번째 인자 main 맞나?
                     snackbar.show()
                     Log.d("heart","true")
@@ -74,11 +82,18 @@ class DetailActivity : AppCompatActivity() {
             detailIvFullheart.setOnClickListener {
                 if(detailIvFullheart.visibility == View.VISIBLE) {
                     detailIvFullheart.visibility = View.INVISIBLE
-                    isHeart = false
+//                    item?.heartStatus = false // 실제 리스트에 있는 아이템의 값을 바꾸는게 아닌 것 같음
+                    MainActivity.dataList[item?.position ?:-1].heartStatus = false
+                    // 만약에 이렇게 했는데도 안되면 MainActivity가 재 실행되는 액티비티 주기의 메소드를 오버라이딩해서
+                    // binding.recyclerView.adapter?.notifyDataSetChanged() 사용해보기?
+                    // dataList 를 여기서도 참조할 수 있게 ... 음 다른 클래스로 빼야 할 듯
+//                    isHeart = false
                 }
                 else {
                     detailIvFullheart.visibility = View.VISIBLE
-                    isHeart = true
+//                    isHeart = true
+//                    item?.heartStatus = true
+                    MainActivity.dataList[item?.position ?:-1].heartStatus = true
                     var snackbar = Snackbar.make(main, "관심 목록에 추가되었습니다",Snackbar.LENGTH_LONG) // 첫번째 인자 main 맞나?
                     snackbar.show()
                 }

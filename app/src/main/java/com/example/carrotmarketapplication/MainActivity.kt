@@ -31,7 +31,16 @@ import com.example.carrotmarketapplication.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
-    private val dataList = mutableListOf<Item>()
+
+    companion object {
+        val dataList = mutableListOf<Item>()
+    }
+
+    // 좋아요 기능 디테일에서 메인으로 업데이트
+    override fun onRestart() {
+        super.onRestart()
+        binding.recyclerView.adapter?.notifyDataSetChanged()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,11 +53,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         // 사용자 권한 요청(알림)
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if(!NotificationManagerCompat.from(this).areNotificationsEnabled()) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (!NotificationManagerCompat.from(this).areNotificationsEnabled()) {
                 // 알림 권한이 없는 경우 → 사용자에게 권한 뇨청
                 val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
-                    putExtra(Settings.EXTRA_APP_PACKAGE,packageName)
+                    putExtra(Settings.EXTRA_APP_PACKAGE, packageName)
                 }
                 startActivity(intent)
             }
@@ -60,7 +69,8 @@ class MainActivity : AppCompatActivity() {
         val marketAdapter = CustomAdapter(dataList)
 
         // recycler item 각 항목 사이사이에 구분선 추가
-        val decoration = DividerItemDecoration(applicationContext, HORIZONTAL) // 처음에 자료보고 VERTICAL 로 지정했었는데 에러뜸
+        val decoration =
+            DividerItemDecoration(applicationContext, HORIZONTAL) // 처음에 자료보고 VERTICAL 로 지정했었는데 에러뜸
 
         binding.recyclerView.apply {
             addItemDecoration(decoration) // decoration(구분선) 지정은 어댑터 연결전에 해줘야 한다!
@@ -70,27 +80,28 @@ class MainActivity : AppCompatActivity() {
         }
 
         // floating button 구현 부분
-        val fadeIn = AlphaAnimation(0f,1f).apply { duration=500 }
-        val fadeOut = AlphaAnimation(1f,0f).apply { duration=500 }
+        val fadeIn = AlphaAnimation(0f, 1f).apply { duration = 500 }
+        val fadeOut = AlphaAnimation(1f, 0f).apply { duration = 500 }
         var isTop = true
 
-        binding.recyclerView.addOnScrollListener(object :RecyclerView.OnScrollListener() {
+        binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
-                if(!binding.recyclerView.canScrollVertically(-1)
-                    &&newState == RecyclerView.SCROLL_STATE_IDLE) {
+                if (!binding.recyclerView.canScrollVertically(-1)
+                    && newState == RecyclerView.SCROLL_STATE_IDLE
+                ) {
                     // 버튼이 점점 사라지게 만든다
                     // 리스트가 최상단에 있는 경우
                     binding.mainFloatingBtn.startAnimation(fadeOut)
                     binding.mainFloatingBtn.visibility = View.GONE
                     isTop = true
-                    Log.d("floating","Top")
+                    Log.d("floating", "Top")
                 } else {
-                    if(isTop) {
-                        binding.mainFloatingBtn.visibility=View.VISIBLE
+                    if (isTop) {
+                        binding.mainFloatingBtn.visibility = View.VISIBLE
                         binding.mainFloatingBtn.startAnimation(fadeIn)
                         isTop = false
-                        Log.d("floating","Not Top")
+                        Log.d("floating", "Not Top")
                     }
                 }
             }
@@ -100,13 +111,17 @@ class MainActivity : AppCompatActivity() {
             binding.recyclerView.smoothScrollToPosition(0)
         }
 
-        val heartStatus = intent.getBooleanExtra("heartStatus",true)
+//        // 예: 나는 1번째 아이템에 대하여 디테일 페이지에서 하트를 누르고 메인 페이지로 넘어왔다.
+//        val bundle = intent.getBundleExtra("bundle")
+//        val heartStatus = bundle?.getBoolean("heartStatus") // true
+//        val position = bundle?.getInt("position") // 0
 
-        marketAdapter.itemClick = object: CustomAdapter.ItemClick {
+
+        marketAdapter.itemClick = object : CustomAdapter.ItemClick {
             override fun onItemClick(view: View, position: Int) {
                 val intent = Intent(this@MainActivity, DetailActivity::class.java)
                 val bundle = Bundle().apply { // bundle 에다가 data class 패킹해서 넣기
-                    putParcelable(DetailActivity.PARCEL_KEY,dataList[position])
+                    putParcelable(DetailActivity.PARCEL_KEY, dataList[position])
                 }
                 intent.putExtras(bundle)
                 startActivity(intent)
@@ -122,10 +137,11 @@ class MainActivity : AppCompatActivity() {
                 // 버튼 클릭시 발생하는 이벤트를 listener 객체에 정의
                 val listener = object : DialogInterface.OnClickListener {
                     override fun onClick(dialog: DialogInterface?, which: Int) {
-                        when(which) {
+                        when (which) {
                             DialogInterface.BUTTON_POSITIVE -> {
                                 deleteItem(position)
                             }
+
                             DialogInterface.BUTTON_NEGATIVE -> {
                                 // 뒤로가기
                                 null
@@ -134,8 +150,8 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
 
-                builder.setPositiveButton("확인",listener)
-                builder.setNegativeButton("취소",listener)
+                builder.setPositiveButton("확인", listener)
+                builder.setNegativeButton("취소", listener)
                 builder.show()
             }
         }
@@ -158,7 +174,7 @@ class MainActivity : AppCompatActivity() {
         val manager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
 
         val builder: NotificationCompat.Builder
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O) { // android 8.0 이상인 경우
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { // android 8.0 이상인 경우
             // 채널 생성
             val channelId = "android-channel"
             val channelName = "Android Channel!"
@@ -179,12 +195,12 @@ class MainActivity : AppCompatActivity() {
                 enableVibration(true)
             }
             manager.createNotificationChannel(channel)
-            builder = NotificationCompat.Builder(this,channelId)
+            builder = NotificationCompat.Builder(this, channelId)
         } else {
             // android 8.0 이하인 경우
             builder = NotificationCompat.Builder(this)
         }
-        val bitmap = BitmapFactory.decodeResource(resources,R.drawable.ic_carrot)
+        val bitmap = BitmapFactory.decodeResource(resources, R.drawable.ic_carrot)
         builder.run {
             setSmallIcon(R.drawable.ic_carrot)
             setWhen(System.currentTimeMillis())
@@ -204,17 +220,18 @@ class MainActivity : AppCompatActivity() {
         builder.setIcon(R.drawable.ic_chat)
 
         val listener = DialogInterface.OnClickListener { dialog, which ->
-            when(which) {
+            when (which) {
                 DialogInterface.BUTTON_POSITIVE -> {
                     super.onBackPressed() // 이거 맞나?
                 }
+
                 DialogInterface.BUTTON_NEGATIVE -> {
                     null
                 }
             }
         }
 
-        builder.setPositiveButton("확인",listener)
+        builder.setPositiveButton("확인", listener)
         builder.setNegativeButton("취소", listener)
         builder.show()
     }
@@ -222,6 +239,7 @@ class MainActivity : AppCompatActivity() {
     private fun dataAddToList() {
         dataList.add(
             Item(
+                0,
                 R.drawable.sample1,
                 "산지 한달된 선풍기 팝니다",
                 "이사가서 필요가 없어졌어요 급하게 내놓습니다",
@@ -235,6 +253,7 @@ class MainActivity : AppCompatActivity() {
         )
         dataList.add(
             Item(
+                1,
                 R.drawable.sample2,
                 "김치냉장고",
                 "이사로인해 내놔요",
@@ -248,6 +267,7 @@ class MainActivity : AppCompatActivity() {
         )
         dataList.add(
             Item(
+                2,
                 R.drawable.sample3,
                 "샤넬 카드지갑",
                 "고퀄지갑이구요\n사용감이 있어서 싸게 내어둡니다",
@@ -261,6 +281,7 @@ class MainActivity : AppCompatActivity() {
         )
         dataList.add(
             Item(
+                3,
                 R.drawable.sample4,
                 "금고",
                 "금고\n떼서 가져가야함\n대우월드마크센텀\n미국이주관계로 싸게 팝니다",
@@ -274,6 +295,7 @@ class MainActivity : AppCompatActivity() {
         )
         dataList.add(
             Item(
+                4,
                 R.drawable.sample5,
                 "갤럭시Z플립3 팝니다",
                 "갤럭시 Z플립3 그린 팝니다\n항시 케이스 씌워서 썻고 필름 한장챙겨드립니다\n화면에 살짝 스크래치난거 말고 크게 이상은없습니다!",
@@ -287,6 +309,7 @@ class MainActivity : AppCompatActivity() {
         )
         dataList.add(
             Item(
+                5,
                 R.drawable.sample6,
                 "프라다 복조리백",
                 "까임 오염없고 상태 깨끗합니다\n정품여부모름",
@@ -300,6 +323,7 @@ class MainActivity : AppCompatActivity() {
         )
         dataList.add(
             Item(
+                6,
                 R.drawable.sample7,
                 "울산 동해오션뷰 60평 복층 펜트하우스 1일 숙박권 펜션 힐링 숙소 별장",
                 "울산 동해바다뷰 60평 복층 펜트하우스 1일 숙박권\n(에어컨이 없기에 낮은 가격으로 " +
@@ -322,6 +346,7 @@ class MainActivity : AppCompatActivity() {
         )
         dataList.add(
             Item(
+                7,
                 R.drawable.sample8,
                 "샤넬 탑핸들 가방",
                 "샤넬 트랜디 CC 탑핸들 스몰 램스킨 블랙 금장 플랩백 !\n\"색상\" : " +
@@ -337,6 +362,7 @@ class MainActivity : AppCompatActivity() {
         )
         dataList.add(
             Item(
+                8,
                 R.drawable.sample9,
                 "4행정 엔진분무기 판매합니다.",
                 "3년전에 사서 한번 사용하고 그대로 둔 상태입니다. 요즘 사용은 안해봤습니다. " +
@@ -351,6 +377,7 @@ class MainActivity : AppCompatActivity() {
         )
         dataList.add(
             Item(
+                9,
                 R.drawable.sample10,
                 "셀린느 버킷 가방",
                 "22년 신세계 대전 구매입니당\n셀린느 버킷백\n구매해서 몇번사용했어요\n" +
